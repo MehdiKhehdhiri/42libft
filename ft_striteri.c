@@ -1,31 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   striteri.c                                         :+:      :+:    :+:   */
+/*   ft_striteri.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhedhir <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yed-dyb <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/30 15:51:27 by mkhedhir          #+#    #+#             */
-/*   Updated: 2021/12/01 20:17:19 by mkhedhir         ###   ########.fr       */
+/*   Created: 2021/11/04 19:54:53 by yed-dyb           #+#    #+#             */
+/*   Updated: 2021/11/08 20:54:50 by yed-dyb          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
 void	ft_striteri(char *s, void (*f)(unsigned int, char*))
 {
-	size_t	i;
-	size_t	j;
+	unsigned int	i;
 
+	if (!s || !f)
+		return ;
 	i = 0;
-	j = 0;
-	if (s != 0 && f != 0)
+	while (s[i])
 	{
-		i = ft_strlen(s);
-		while (j < i)
-		{
-			(*f)(j, s);
-			s++;
-			j++;
-		}
+		f(i, &s[i]);
+		i++;
 	}
 }
+/*char to_upper(unsigned int i , char c) {
+	return c - 32;
+}
+
+int main () {
+	printf("%s", ft_strmapi("hello", &to_upper));
+}*/

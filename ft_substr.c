@@ -1,41 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   substr.c                                           :+:      :+:    :+:   */
+/*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhedhir <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yed-dyb <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/25 20:03:39 by mkhedhir          #+#    #+#             */
-/*   Updated: 2021/12/06 21:02:44 by mkhedhir         ###   ########.fr       */
+/*   Created: 2021/11/03 09:38:55 by yed-dyb           #+#    #+#             */
+/*   Updated: 2021/11/09 14:37:46 by yed-dyb          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
-char	*ft_substr(char	const *s, unsigned int start, size_t len)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	unsigned int	i;
-	unsigned int	j;
-	unsigned int	l;
-	char			*str;
+	size_t	i;
+	char	*substr;
 
 	if (!s)
+		return (NULL);
+	if (ft_strlen(s) < start || len == 0)
+		return (ft_calloc(1, sizeof(char)));
+	if (len + start < ft_strlen(s))
+		substr = ft_calloc(len + 1, sizeof(char));
+	else
+		substr = ft_calloc(ft_strlen(s) + 1 - start, sizeof(char));
+	if (!substr)
 		return (0);
-	i = -1;
-	j = 0;
-	l = start;
-	if (start >= ft_strlen(s))
+	i = 0;
+	while (i < len && s[start])
 	{
-		str = malloc(1);
-		str[0] = '\0';
-		return (str);
+		substr[i] = s[start];
+		start++;
+		i++;
 	}
-	while (s[start++] && len-- > 0)
-		j++;
-	str = malloc(j * sizeof(char) + 1);
-	if (!str)
-		return (0);
-	while (++i < j)
-		str[i] = s[l++];
-	str[i] = '\0';
-	return (str);
+	return (substr);
 }
+
+/*int main () {
+	printf("%s", ft_substr("tripouille", 1, 1));
+}*/

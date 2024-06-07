@@ -3,85 +3,89 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhedhir <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yed-dyb <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/26 13:06:35 by mkhedhir          #+#    #+#             */
-/*   Updated: 2021/12/06 16:53:59 by mkhedhir         ###   ########.fr       */
+/*   Created: 2021/11/03 11:28:47 by yed-dyb           #+#    #+#             */
+/*   Updated: 2021/11/08 11:50:20 by yed-dyb          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-/*
+
 #include "libft.h"
 
-int	ft_inset(char c, const char *set)
+static char	*trim_left(char const *str, char const *set)
 {
-int	i;
+	int	i;
+	int	j;
+	int	count;
 
-i = 0;
-while (set[i] != '\0')
-{
-if (set[i] == c)
-return (1);
-i++;
-}
-return (0);
+	i = 0;
+	count = 0;
+	while (str[i])
+	{
+		j = 0;
+		while (set[j])
+		{
+			if (str[i] == set[j])
+				count++;
+			j++;
+		}
+		i++;
+		if (count != i)
+			return ((char *)str + (count));
+	}
+	return (0);
 }
 
-int	count_set(char const *s1, char const *set, int l)
+static int	trim_len(char *str, char const *set)
 {
-int	i;
-int	j;
+	int	i;
+	int	j;
+	int	count;
 
-i = 0;
-j = 0;
-while (i < l)
-{
-if (ft_inset(s1[i], set))
-j++;
-i++;
-}
-return (j);
+	i = ft_strlen(str) - 1;
+	count = i;
+	while (i > 0)
+	{
+		j = 0;
+		while (set[j])
+		{
+			if (str[i] == set[j])
+				count--;
+			j++;
+		}
+		i--;
+		if (count != i)
+			return (count + 1);
+	}
+	return (1);
 }
 
 char	*ft_strtrim(char const *s1, char const *set)
 {
-char	*res;
-int		l;
-int		i;
-int		j;
+	char	*trimed_str;
+	char	*temp;
+	int		len;
+	int		i;
 
-if (!s1 || !set)
-return (0);
-l = ft_strlen((char *)s1);
-i = 0;
-j = count_set(s1, set, l);
-res = malloc(l - j + 1);
-if (!res)
-return ("\0");
-j = 0;
-i = 0;
-while (i < l)
-{
-if (!ft_inset(s1[i], set))
-res[j++] = s1[i];
-i++;
+	if (!s1)
+		return ((char *)s1);
+	temp = trim_left(s1, set);
+	if (!temp)
+		return (ft_calloc(1, sizeof(char)));
+	len = trim_len(temp, set);
+	trimed_str = malloc(len + 1 * sizeof(char));
+	if (!trimed_str)
+		return (NULL);
+	i = 0;
+	while (i < len)
+	{
+		trimed_str[i] = temp[i];
+		i++;
+	}
+	trimed_str[i] = '\0';
+	return (trimed_str);
 }
-res[j] = '\0';
-return (res);
+
+/*int main () {
+	printf("%s", ft_strtrim("abcdba", "acb"));
 }*/
-#include "libft.h"
-
-char	*ft_strtrim(char const *s1, char const *set)
-{
-	size_t		len;
-	char		*str;
-
-	if (!s1 || !set)
-		return (0);
-	while (*s1 && ft_strchr(set, *s1))
-		s1++;
-	len = ft_strlen(s1);
-	while (len && ft_strchr(set, s1[len]))
-		len--;
-	str = ft_substr((char *) s1, 0, len + 1);
-	return (str);
-}

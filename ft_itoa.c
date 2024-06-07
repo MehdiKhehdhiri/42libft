@@ -3,59 +3,74 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhedhir <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yed-dyb <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/29 14:58:39 by mkhedhir          #+#    #+#             */
-/*   Updated: 2021/11/29 22:33:36 by mkhedhir         ###   ########.fr       */
+/*   Created: 2021/11/03 14:58:02 by yed-dyb           #+#    #+#             */
+/*   Updated: 2021/11/09 15:28:47 by yed-dyb          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
-unsigned int	ft_intlen(int n)
+static int	count_len(long int nb)
 {
-	unsigned int	len;
-	unsigned int	un;
+	int	count;
 
-	len = 0;
-	if (n < 0)
+	count = 0;
+	while (nb > 0)
 	{
-		len++;
-		n *= -1;
+		count++;
+		nb = nb / 10;
 	}
-	un = n;
-	if (un == 0)
-		len++;
-	while (un > 0)
+	return (count);
+}
+
+static void	nbr_to_str(long int nb, char *str, int len, int neg)
+{
+	int	i;
+
+	i = 0;
+	str[len] = '\0';
+	if (nb == 0)
+		str[0] = 48;
+	while (nb >= 1)
 	{
-		len++;
-		un /= 10;
+		str[len - 1] = (nb % 10) + '0';
+		nb /= 10;
+		len--;
 	}
-	return (len);
+	if (neg == 1)
+		str[0] = '-';
 }
 
 char	*ft_itoa(int n)
 {
-	unsigned int	i;
-	unsigned int	un;
-	char			*res;
+	int			count;
+	long int	nbr;
+	char		*str;
+	int			neg;
 
-	i = ft_intlen(n);
-	res = malloc((i + 1) * sizeof(char));
-	if (!res)
-		return (0);
-	if (n < 0)
+	count = 0;
+	nbr = n;
+	neg = 0;
+	if (nbr < 0)
 	{
-		res[0] = '-';
-		n *= -1;
+		count++;
+		nbr *= -1;
+		neg = 1;
 	}
-	un = n;
-	res[i--] = '\0';
-	if (n == 0)
-		res[0] = '0';
-	while (un > 0)
-	{
-		res[i--] = '0' + un % 10;
-		un /= 10;
-	}
-	return (res);
+	count += count_len(nbr);
+	if (nbr == 0)
+		str = ft_calloc(2, sizeof(char));
+	else
+		str = malloc((count + 1) * sizeof(char));
+	if (!str)
+		return (NULL);
+	str[0] = 48;
+	nbr_to_str(nbr, str, count, neg);
+	return (str);
 }
+
+/*int main () {
+	printf("%s", ft_itoa(-2147483648));
+}*/

@@ -1,61 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   atoi.c                                             :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhedhir <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mkhehdir <mkhehdir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/25 03:55:38 by mkhedhir          #+#    #+#             */
-/*   Updated: 2021/12/06 21:00:01 by mkhedhir         ###   ########.fr       */
+/*   Created: 2021/11/02 19:17:08 by yed-dyb           #+#    #+#             */
+/*   Updated: 2024/05/05 23:04:50 by mkhehdir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
 
-int	is_space(char c)
+long long	ft_atoi(const char *str)
 {
-	if (c == '\t' || c == '\n' || c == '\r')
-		return (1);
-	if (c == '\v' || c == '\f' || c == ' ')
-		return (1);
-	return (0);
-}
-
-int	check_sign(const char *str, int i, int *neg)
-{
-	int	f;
-
-	f = 0;
-	if ((str[i] == '-' || str[i] == '+') && !f)
-	{
-		if (str[i] == '-')
-			*neg = -1;
-		i++;
-		f++;
-	}
-	return (i);
-}
-
-int	ft_atoi(const char *nptr)
-{
+	int			sign;
+	long long	nbr;
 	int			i;
-	long long	nb;
-	int			neg;
+	int			count;
 
 	i = 0;
-	nb = 0;
-	neg = 1;
-	while (is_space(nptr[i]))
+	sign = 1;
+	nbr = 0;
+	count = 0;
+	while ((str[i] > 8 && str[i] <= 13) || str[i] == 32)
 		i++;
-	i = check_sign(nptr, i, &neg);
-	while (nptr[i] >= '0' && nptr[i] <= '9')
+	if (str[i] == '-' || str[i] == '+')
 	{
-		nb *= 10;
-		nb += (nptr[i] - '0');
+		if (str[i] == '-')
+			sign *= -1;
 		i++;
-		if (nb > 2147483647 && neg == 1)
-			return (-1);
 	}
-	if (nb < -2147483648 - 1)
-		return (0);
-	return ((int)nb * neg);
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		nbr = (str[i] - '0') + (nbr * 10);
+		i++;
+		count++;
+	}
+	return (nbr * sign);
 }
+
+/*int	main()
+{
+	printf ("%d\n", ft_atoi("9223372036854775804"));
+	printf ("%d\n", atoi("9223372036854775804"));
+}*/

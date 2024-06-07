@@ -3,36 +3,55 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhedhir <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yed-dyb <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/03 16:57:11 by mkhedhir          #+#    #+#             */
-/*   Updated: 2021/12/06 22:05:42 by mkhedhir         ###   ########.fr       */
+/*   Created: 2021/11/05 18:58:29 by yed-dyb           #+#    #+#             */
+/*   Updated: 2021/11/06 18:39:58 by yed-dyb          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_list	*ft_lstmap(t_list *lst, void *(*f)(void*), void (*del)(void*))
+t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
-	t_list	*newlist;
-	t_list	*newelem;
+	t_list	*head;
+	t_list	*tmp;
 
-	if (lst != 0 && f != 0)
+	if (!lst)
+		return (NULL);
+	head = 0;
+	while (lst)
 	{
-		newlist = ft_lstnew(f(lst->content));
-		newelem = newlist;
-		while (lst->next)
+		tmp = ft_lstnew(f(lst->content));
+		if (!tmp)
 		{
-			lst = lst->next;
-			newelem->next = ft_lstnew(ft_strdup(f(lst->content)));
-			if (newelem->next == 0)
-			{
-				ft_lstclear(&newlist, del);
-				return (0);
-			}
-			newelem = newelem->next;
+			ft_lstclear(&head, del);
+			return (NULL);
 		}
-		return (newlist);
+		ft_lstadd_back(&head, tmp);
+		lst = lst->next;
 	}
-	return (0);
+	return (head);
 }
+
+/*void del(void *lst) {}
+
+void *toTest(void *lst) {
+	((t_list *)lst)->content = "test";
+	return (lst);
+}
+
+int main () {
+	t_list *head;
+	head = malloc(3 * sizeof(t_list));
+	head->content = "first";
+	head->next = ft_lstnew("second");
+	head->next->next = ft_lstnew("third");
+	head->next->next->next = NULL;
+
+	t_list *lst = ft_lstmap(head, toTest, del);
+	while (head) {
+		printf("%s\n", head->content);
+		head = head->next;
+	}
+}*/

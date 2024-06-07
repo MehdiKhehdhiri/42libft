@@ -3,25 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhedhir <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yed-dyb <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/03 14:57:18 by mkhedhir          #+#    #+#             */
-/*   Updated: 2021/12/03 15:04:10 by mkhedhir         ###   ########.fr       */
+/*   Created: 2021/11/05 11:24:29 by yed-dyb           #+#    #+#             */
+/*   Updated: 2021/11/05 12:16:59 by yed-dyb          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
 int	ft_lstsize(t_list *lst)
 {
-	int	i;
-	t_list	*l;
+	int	count;
 
-	l = lst;
-	i = 0;
-	while (l)
+	count = 0;
+	while (lst)
 	{
-		l = l->next;
-		i++;
+		lst = lst->next;
+		count++;
 	}
-	return(i);
+	return (count);
 }
+
+/*int main () {
+	t_list *head;
+	head = malloc(3 * sizeof(t_list));
+	head->content = "first";
+	head->next = ft_lstnew("second");
+	head->next->next = ft_lstnew("third");
+	head->next->next->next = NULL;
+
+	printf("%d", ft_lstsize(head));
+}*/
